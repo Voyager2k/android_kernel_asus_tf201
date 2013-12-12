@@ -375,10 +375,11 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks \
-       -ftree-vectorize \
-       -mno-unaligned-access \
-       -Wno-sizeof-pointer-memaccess \
+		   -fno-delete-null-pointer-checks -mno-unaligned-access \
+		   -Wno-sizeof-pointer-memaccess -mtune=cortex-a9 -march=armv7-a -mfpu=neon \
+		   -fpredictive-commoning -fgcse-after-reload -ftree-vectorize \
+		   -fipa-cp-clone -fsingle-precision-constant -pipe \
+		   -funswitch-loops \
        $(KERNEL_MODS)
 
 KBUILD_AFLAGS_KERNEL :=
