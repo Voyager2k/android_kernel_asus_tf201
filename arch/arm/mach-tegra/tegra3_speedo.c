@@ -89,7 +89,6 @@ static const u32 cpu_process_speedos[][CPU_PROCESS_CORNERS_NUM] = {
 
 /* T30 family */
 	{295, 336, 358, 375, UINT_MAX}, /* [1]: cpu_speedo_id 1: AP30 */
-	{325, 325, 358, 375, UINT_MAX}, /* [2]: cpu_speedo_id 2: T30  */
 	{325, 325, 358, 375, UINT_MAX}, /* [3]: cpu_speedo_id 3: T30S */
 
 /* Characterization SKUs */
@@ -99,11 +98,12 @@ static const u32 cpu_process_speedos[][CPU_PROCESS_CORNERS_NUM] = {
 
 /* T33 family */
 	{295, 336, 358, 375, UINT_MAX},      /* [7]: cpu_speedo_id: 4: AP33 */
+	{325, 325, 358, 375, UINT_MAX}, /* [2]: cpu_speedo_id 2: T30  */
+        {295, 336, 358, 375, 391, UINT_MAX}, /* [10]: cpu_speedo_id 7: T30L  */
 	{358, 358, 358, 358, 397, UINT_MAX}, /* [8]: cpu_speedo_id: 5: T33  */
 	{364, 364, 364, 364, 397, UINT_MAX}, /* [9]: cpu_speedo_id: 6/12: T33S/AP37 */
 
 /* T30 'L' family */
-	{295, 336, 358, 375, 391, UINT_MAX}, /* [10]: cpu_speedo_id 7: T30L  */
 	{295, 336, 358, 375, 391, UINT_MAX}, /* [11]: cpu_speedo_id 8: T30SL */
 
 /* T30 Automotives */
@@ -190,6 +190,7 @@ static void rev_sku_to_speedo_ids(int rev, int sku)
 			threshold_index = 1;
 			break;
 
+#ifndef CONFIG_TF201_OC
 		case 0x81: /* T30 */
 			switch (package_id) {
 			case 1: /* MID => T30 */
@@ -209,7 +210,12 @@ static void rev_sku_to_speedo_ids(int rev, int sku)
 				break;
 			}
 			break;
+#endif
 
+#ifdef CONFIG_TF201_OC      
+		case 0x81: /* T30 */
+                case 0x83: /* T30L or T30S */
+#endif
 		case 0x80: /* T33 or T33S */
 			switch (package_id) {
 			case 1: /* MID => T33 */
@@ -230,6 +236,7 @@ static void rev_sku_to_speedo_ids(int rev, int sku)
 			}
 			break;
 
+#ifndef CONFIG_TF201_OC
 		case 0x83: /* T30L or T30S */
 			switch (package_id) {
 			case 1: /* MID => T30L */
@@ -249,6 +256,7 @@ static void rev_sku_to_speedo_ids(int rev, int sku)
 				break;
 			}
 			break;
+#endif
 
 		case 0x8F: /* T30SL */
 			cpu_speedo_id = 8;
